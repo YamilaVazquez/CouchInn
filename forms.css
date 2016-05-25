@@ -1,0 +1,83 @@
+h2{
+  text-align:center;
+  margin-bottom:20px;
+  color:#BDD072;
+  font-family: arial;
+}
+form{
+   margin: auto;
+   width: 60%;
+   max-width:500px;
+   background: #BDD072;
+   padding:30px;
+   border:1px solid #BDD072(0,0,0,0.2);
+   font-family: arial;
+}
+label{
+	display: block;
+	font-family: arial;
+	color:  white;
+	font-size: 20px;
+}
+input{
+	display: block;
+  	padding:5px;
+  	width:90%;
+  	margin: 15px 0;
+  	font-size: 1.1em;
+  	border-right: 20px;
+}
+.submitbtn { /*Para boton aceptar y cancelar*/
+	display: inline;
+	border: none;
+	background: white;
+	color: black;
+	padding: 4px;
+	margin: 10px;
+	cursor: pointer;
+	width: 35%;
+}
+legend{
+	font-family: arial;
+}
+input[type="submit"]:hover{
+	opacity:1;
+	color:#BDD072;
+}
+input[type="submit"]active{
+	transform:scale(0.75); /*para reducir cuando se hace click*/
+}
+textarea {
+	resize:none;
+}
+/* Cuadro de busqueda */
+.busqueda {
+	text-align: center;
+	margin: 0px auto;
+	padding: 5px 0px;
+}
+#searchid {
+   background-color: initial;
+   padding: 0px;
+   border: none;
+}
+#searchid input {
+	display: inline;
+}
+#searchid select {
+	display: inline;
+}
+#searchid input[type=text] {
+	width: 20px;
+}
+#searchid input[type=submit] {
+    width: 20%;
+}
+/*@media (max-width:768px){
+form{
+width:75%;
+}}
+@media (max-width:480px){
+form{
+width:95%;
+}}*/
