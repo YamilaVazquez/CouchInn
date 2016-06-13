@@ -73,6 +73,14 @@ textarea {
 #searchid input[type=submit] {
     width: 20%;
 }
+legend{
+	color: grey;
+	font-size: 135%;
+}
+td{
+	color: white;
+	font-size: 110%;
+}
 /*@media (max-width:768px){
 form{
 width:75%;

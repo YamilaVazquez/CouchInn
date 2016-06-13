@@ -18,13 +18,13 @@ function campoURL($campo){
 		return false;
 	}
 }
-// longitud minima > 3
+// longitud minima > 2
 function campoObligatorio($campo){
-	return (strlen($campo) > 3);
+	return (strlen($campo) > 2);
 }
 //Solo letras y espacios
 function campoLetras($campo){
-	if ((strlen($campo) > 3) && (preg_match('/^[a-zA-ZÑñ ]+$/', $campo))) {
+	if ((strlen($campo) > 2) && (preg_match('/^[a-zA-ZÑñ ]+$/', $campo))) {
 		return true;
 	} else {
 		return false;
@@ -47,28 +47,38 @@ function campoUsuario($campo){
 		return false;
 	}
 }
-//valida una fecha. No basada en la ver de JS
+//valida una fecha. No basada en la ver de JS.
 function validarFecha($campo){
-	$campo  = explode('-', $campo); //se recibe en formato dd/mm/aaaa [0]dia [1]mes[2]año
+	$campo  = explode('-', $campo); //se recibe en formato aaaa-mm-dd [0]año [1]mes[2]dia
 	if (count($campo) == 3) {
-		if (checkdate($campo[1], $campo[0], $campo[2])) { //checkdate ( int $MES, int $DIA ,int $AÑO )
-			$actual=date_create(null);
+		if (checkdate($campo[1], $campo[2], $campo[0])) { /*checkdate ( int $MES, int $DIA ,int $AÑO ).Retorna True si es valida*/
+			/*$actual=date_create(null);
 			date_time_set($actual,0,0,0);
 			$fecha=date_create($campo[2].'-'.$campo[1].'-'. $campo[0]);
-			if($fecha >= $actual){
+			if($fecha >= $actual){*/
 				return true; // fecha valida.
-				
-			}
+			/*}
 			else{
 				return false;
-			}
-			
+			}*/
 		} else {
 			return false; // fecha invalida
 		}
 	} else {
 		return false;// no corresponde con el formato esperado.
 	}
+}
+/*Valida fecha de Nacimiento. la diferencia con la fecha actual debe dar +18 años. CAMBIAR return por codigos para saber porque fallo*/
+function validarFechaNacimiento($campo){
+	if (validarFecha($campo)) {
+		$campo  = explode('-', $campo); //formato a-m-d [2]dia [1]mes[0]año
+		$birthday = new DateTime($campo[0].'-'.$campo[1].'-'. $campo[2]);
+		$interval = $birthday->diff(new DateTime);
+		$edad= $interval->y;
+		if ($edad > 18) {
+			return true;
+		}else {return false;}
+	} else {return false;}
 }
 /*valida la imagen subida. Devuelve su tipo y contenido listo para insertar en la bd como un array en caso de ser valida*/
 function validarImagen () {
@@ -98,3 +108,20 @@ function validarImagen () {
 		// echo 'no se seleccionó ninguna imagen';
 	}
 }
+/*FUNCIONES DE CONSULTA A LA BD*/
+/*
+INSERT INTO table_name (column1,column2,column3,...)
+VALUES (value1,value2,value3,...);
+INSERT INTO Customers (CustomerName, City, Country)
+VALUES ('Cardinal', 'Stavanger', 'Norway');
+
+UPDATE table_name
+SET column1=value1,column2=value2,...
+WHERE some_column=some_value;
+UPDATE Customers
+SET ContactName='Alfred Schmidt', City='Hamburg'
+WHERE CustomerName='Alfreds Futterkiste';
+
+DELETE FROM Customers
+WHERE CustomerName='Alfreds Futterkiste' AND ContactName='Maria Anders'; 
+*/

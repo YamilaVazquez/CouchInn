@@ -1,0 +1,121 @@
+Boolean in MYSQL
+ust a note for php developers (I lack the necessary stackoverflow points to post this as a comment) ... the automagic (and silent) conversion to TINYINT means that php retrieves a value from a "BOOLEAN" column as a "0" or "1", not the expected (by me) true/false.
+
+A developer who is looking at the SQL used to create a table and sees something like: "some_boolean BOOLEAN NOT NULL DEFAULT FALSE," might reasonably expect to see true/false results when a row containing that column is retrieved. Instead (at least in my version of PHP), the result will be "0" or "1" (yes, a string "0" or string "1", not an int 0/1, thank you php).
+
+It's a nit, but enough to cause unit tests to fail.
+
+--
+
+BIT(1) and TINYINT(1) will both use one byte of storage. Up until MySQL 5.0.3, BIT was actually a synonym for TINYINT. Later versions of MySQL changed the implementation of BIT. But even with the implementation change, there's still no "storage size" benefit to the BIT datatype (at least with InnoDB and MyISAM; other storage engines e.g. NDB may have some storage optimization for multiple BIT column declarations.) The bigger issue is that some client libraries don't recognize or appropriately handle returned BIT datatype columns. A TINYINT works better.
+
+When you add a bit column to your table it will occupy a whole byte in each record, not just a single bit. When you add a second bit column it will be stored in the same byte. The ninth bit column will require a second byte of storage. Tables with 1 bit column will not gain any storage benefit.
+
+********
+
+El forzado de tipos en PHP funciona de la misma manera que en C:, donde el nombre del tipo deseado se escribe entre paréntesis antes de la variable que se quiera forzar. 
+
+$bar = (boolean) $foo;   // $bar es un boolean
+
+ Los siguientes forzados de tipos están permitidos:
+
+    (int), (integer) - forzado a integer
+    (bool), (boolean) - forzado a boolean
+    (float), (double), (real) - forzado a float
+    (string) - forzado a string
+    (array) - forzado a array
+    (object) - forzado a object
+    (unset) - forzado a NULL (PHP 5)
+
+El forzado (binary) y el soporte del prefijo b fueron añadidos en PHP 5.2.1 
+-------------------------------------------------
+
+MYSQL
+
+UPDATE `couchinn`.`couchs` SET `visibilidad` = '1' WHERE `couchs`.`idcouch` = 7;
+
+Nuevo Usuario:
+
+INSERT INTO `couchinn`.`usuarios` (`iduser`, `email`, `pass`, `nombre`, `apellido`, `fechanac`, `nacionalidad`, `telefono`, `bio`, `fotouser`, `admin`, `premium`) VALUES (NULL, 'user@user.com', 'user', 'usuario', 'estandar', '1990-12-17', 'argentino', '02214557', 'usuario estandar', NULL, '0', '0');
+
+------
+
+Nuevo Couch:
+
+INSERT INTO `couchinn`.`couchs` (`idcouch`, `iduser`, `idtipo`, `cod_loc`, `nombrecouch`, `capacidad`, `visibilidad`) VALUES (NULL, '2', '2', '1', 'Habitación con cama tipo cucheta.', '2', '1');
+
+-----
+
+SELECT * FROM `couchs` 
+
+*****************************************
+'select * from salas where idsala = '.$_GET['id']
+
+"SELECT * 
+FROM espectaculos e inner join salas s on (e.idsala = s.idsala) inner join tiposespectaculos t on (e.idtipoespectaculo = t.idtipoespectaculo)
+ WHERE e.fecha >= '$fechaActual'"
+
+'SELECT * 
+FROM espectaculos e inner join salas s on (e.idsala = s.idsala) inner join tiposespectaculos t on (e.idtipoespectaculo = t.idtipoespectaculo)
+ WHERE (e.fecha = $campofecha) and (s.idsala = '.$_GET['filtrosala'].')'
+
+
+"	(SELECT 'Espectaculos' as 'item',count(*) as 'cantidad' FROM espectaculos)
+										union
+										(SELECT 'Salas' as 'item', count(*) as 'cantidad' FROM salas)
+										union
+										(SELECT 'Categorias' as 'item', count(*) as 'cantidad' FROM tiposespectaculos)
+										union
+										(SELECT 'Usuarios' as 'item', count(*) as 'cantidad' FROM usuarios)"
+										
+
+<?php
+	include_once $_SERVER['DOCUMENT_ROOT'].'/funciones.php';
+	include_once $_SERVER['DOCUMENT_ROOT'].'/admin/sesion.php';
+		
+	try{
+		Sesion::estaAutorizado();
+	}
+	catch(Exception $e){
+		header('Location: /admin/loginform.php?mensaje='.urlencode($e->getMessage()).'&tipo=Error');
+	}
+?>
+
+Menu de usuario registrado
+<?php	
+				
+				if(Sesion::estaLogueado()){	
+					echo '<li><a href="/backend.php" title="Ingrese a la Administracion del sistema">Administracion</a></li>';
+					echo '<li><a href="/admin/logout.php" title="Salga del sistema">Cerrar sesion</a></li>';
+				}
+				else{
+					echo '<li><a href="/admin/loginform.php" title="Ingrese al Sistema">Iniciar sesion</a></li>';
+				}		
+?>	
+
+// Comprobamos si el nombre de usuario o la cuenta de correo ya existían
+            $checkuser = mysql_query("SELECT usuario FROM usuarios WHERE usuario='$username'");
+            $username_exist = mysql_num_rows($checkuser);
+            $checkemail = mysql_query("SELECT email FROM usuarios WHERE email='$email'");
+            $email_exist = mysql_num_rows($checkemail);
+            if ($email_exist>0) {
+                echo "La cuenta de correo ya esta en uso"; 
+-----------------------------------------------------------------
+
+-Alta Usuario: email, pass, nombre, apellido, nacionalidad, fechaNac (>18), telefono, bio, foto? -setear esadmin y espremium-
+
+-Baja de Usuario: Cancelacion de todas las reservas al usuario y realizadas por el usuario, baja de sus couchs e img y calif correspondientes.
+
+-Iniciar sesion: validacion por mail y pass. traer iduser, esadmin y espremium para $_SESSION
+
+-Ver couchs: idcouch, localidad, img1, tipo, capacidad??, descrip
+
+- ver detalle couch: descrip, tipo, capacidad, localidad, imgs, idcouch, iduser, calificaciones y preguntas
+
+- preguntar: enviar idcouch, iduser, pregunta.
+
+
+SELECT nombrecouch, capacidad, nombreloc, idcouch, nombretipo, visibilidad
+FROM couchs c INNER?? JOIN localidad
+WHERE iduser="$iduser";
+

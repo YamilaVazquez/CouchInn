@@ -1,0 +1,98 @@
+<input type="button" name="cancel" value="cancel" onClick="window.location='http://yoursite.com/index.php';" />
+
+UPLOAD IMAGES
+
+Using Images in One Folder
+
+Advantages It's technically a bit easier to clean up and not all that much work.
+
+Disadvantages You'll have to write at minimum a very basic collision detection algorithm and a very basic 'random name generator'.And if you end up with a very large number of files in that folder(but we'd be talking millions before it was an issue), listing the directory contents can become inordinately slow using traditional methods;
+
+I highly recommend just using a hashed file name and storing it (the filename) in the database and then storing the images in a folder (or many folders) on disk. This should be much easier in the long run and perform better in general without getting too complicated.
+
+<form method='POST' action='UploadImage.php' enctype="multipart/form-data">
+    <input type='file' name='UploadImage'>
+    <input type='submit' value="submit">
+</form>
+
+UploadImage.php
+<?php
+include('connect.php'); // Do Database Connection in this file (create a file namely connect.php inside MyProject Folder)
+extract($_POST);
+
+$UploadedFileName=$_FILES['UploadImage']['name'];
+if($UploadedFileName!='')
+{
+                $upload_directory = "MyUploadImages/"; //This is the folder which you created just now
+        $TargetPath=time().$UploadedFileName;
+                if(move_uploaded_file($_FILES['files']['tmp_name'], $upload_directory.$TargetPath))
+                {    
+            $QueryInsertFile="INSERT INTO TableName SET ImageColumnName='$TargetPath'"; 
+            // Write Mysql Query Here to insert this $QueryInsertFile   .                   
+                }
+}
+?>
+
+2) Retreiving Image from database
+
+AnyPage.php
+
+<?
+$Query="SELECT * FROM TableName";
+// Write mysql query to fetch $Query
+
+store that ImageColumnName value to any variable say $MyPhoto.
+?>
+
+<img src="<?echo $MyPhoto;?>">
+
+********************************
+
+//The extract() function imports variables into the local symbol table from an array.
+
+This function uses array keys as variable names and values as variable values. For each element it will create a variable in the current symbol table. 
+$a = "Original";
+$my_array = array("a" => "Cat","b" => "Dog", "c" => "Horse");
+extract($my_array);
+echo "\$a = $a; \$b = $b; \$c = $c";
+
+********************************************************
+*******************************************************
+http://www.w3schools.com/colors/colors_names.asp
+
+/*Carteles Informativos*/
+.cartelCorrecto,.cartelError, .cartelInfo, .cartelAtencion{
+	padding: 12px 10px;
+	margin:5px;
+	color:black;
+	
+}
+.cartelCorrecto{
+	background-color: lightgreen;		
+}
+
+.cartelError{
+	background-color: lightcoral;	
+}
+.cartelInfo{
+	background-color: lightsteelblue	
+}
+.cartelAtencion{
+	background-color: lightgoldenrodyellow;	
+}
+
+//Si se recibe algun mensaje se genera el cartel: se recibe mensaje=texto y tipo=[Correcto|Error|Info|Atencion]
+if(isset($_GET['mensaje'])){
+	echo '<div id="cartel" class="cartel'.$_GET['tipo'].'">'.$_GET['mensaje'].'</div>';
+}
+
+
+<form class="forminise" name="inisesion" method="post" action="login.php" onsubmit="eliminarCartel();return validarsesion();">
+
+<script>
+//Busca el posible cartel (correcto o error) y lo elimina al hacerse la validacion del submit.
+function eliminarCartel(){
+	cartel=document.getElementById('cartel');
+	cartel.parentNode.removeChild(cartel);
+}
+</script>

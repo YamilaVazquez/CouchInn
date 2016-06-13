@@ -80,3 +80,23 @@ nav ul li {
 	font-size: xx-large;
 	font-family: "Helvetica";
 }
+/*Carteles Informativos*/
+.cartelCorrecto, .cartelError, .cartelInfo, .cartelAtencion{
+	padding: 12px 10px;
+	margin:5px;
+	color:black;
+	
+}
+.cartelCorrecto{
+	background-color: lightgreen;		
+}
+
+.cartelError{
+	background-color: lightcoral;	
+}
+.cartelInfo{
+	background-color: lightsteelblue	
+}
+.cartelAtencion{
+	background-color: lightgoldenrodyellow;	
+}
