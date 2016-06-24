@@ -17,7 +17,9 @@ include_once 'sesion.php';
 			<ul id="navsesion">
 <?php
 			if (Sesion::estaLogueado()){
-				echo '<li><a href="logout.php">Cerrar Sesion</a></li>';
+				echo '<li style="color:white"><i>Bienvenido '.Sesion::nombreUsuario().'</i></li>
+				<li> | </li>
+				<li><a href="logout.php">Cerrar Sesion</a></li>';
 			} else {
 				echo '<li><a href="loginform.php">Iniciar sesión</a></li>
 				<li> | </li>
@@ -34,6 +36,7 @@ include_once 'sesion.php';
 					echo '<li><a href="#">MI PERFIL</a>
 						<ul id="submenu">
 							<li><a href="modificarPerfil.php">Modificar</a></li>
+							<li><a href="micalificacion.php"> Mi calificación</a></li>
 							<li><a href="#">Preguntas</a></li>';
 							if (Sesion::esAdmin()) {
 								echo'<li><a href="pruebavertipos.php">Tipo Couch</a></li>
@@ -44,15 +47,19 @@ include_once 'sesion.php';
 					<li> | </li>
 					<li><a href="#">COUCHS</a>
 						<ul id="submenu">
-							<li><a href="#">Mis Couchs</a></li>
-							<li><a href="couchnewform.php">Nuevo</a></li>
+							<li><a href="miscouchs.php">*Mis Couchs</a></li>
+							<li><a href="couchnew.php">*Nuevo</a></li>
+							<li><a href="pendientes2.php">*Reservas pendientes</a></li>
+							<li><a href="hostreservasaceptadas.php">*Reservas aceptadas</a></li>
+							<li><a href="hosthistorial.php">*Historial de reservas</a></li>
 						</ul>
 					</li>
 					<li> | </li>
 					<li><a href="#">RESERVAS</a>
 						<ul id="submenu">
-							<li><a href="#">mis reservas</a></li>
-							<li><a href="#">mis huespedes</a></li>
+							<li><a href="pendientes.php">Pendientes</a></li>
+							<li><a href="huesreservasaceptadas.php">Aceptadas</a></li>
+							<li><a href="hueshistorial.php">Historial</a></li>
 						</ul>
 					</li>
 					<li> | </li>';

@@ -48,18 +48,7 @@ function nombre_valido ($valor)
 	        else return false;
 	}
 
-function yaseencuentra($conexion){
-	$sql = "select * from tipocouch where nombretipo = '".$_POST['tipoCouch']."'";
-	$result = mysqli_query($conexion, $sql);
-	$fila= mysqli_fetch_array($result);
-	
-	if($fila){
-		return true;
-	}
-	else{
-		return false;
-	}
-}
+
 
 function existeEnBD($conexion){
 	$sql = "select * from tipocouch where idtipo = '".$_POST['id']."'";
