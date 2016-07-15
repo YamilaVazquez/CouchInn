@@ -37,10 +37,16 @@ include_once 'sesion.php';
 						<ul id="submenu">
 							<li><a href="modificarPerfil.php">Modificar</a></li>
 							<li><a href="micalificacion.php"> Mi calificación</a></li>
-							<li><a href="#">Preguntas</a></li>';
+							<li><a href="preguntaDueno.php">Preguntas</a></li>
+							<li><a href="respuestas.php">Respuestas</a></li>';
 							if (Sesion::esAdmin()) {
 								echo'<li><a href="pruebavertipos.php">Tipo Couch</a></li>
-								<li><a href="#">Reportes</a></li>';
+								<li><a href="reportePremium.php">Reporte de usuarios</a></li>
+								<li><a href="reporteReservas.php">Reporte de reservas</a></li>';
+
+							}
+							else{
+								echo '<li><a href="bajausuario.php"> Eliminar cuenta</a></li>';
 							}
 					echo'</ul>
 					</li>

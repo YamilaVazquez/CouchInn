@@ -37,6 +37,26 @@ if (mysqli_num_rows($result)>0){
 }else {echo "<p><strong>No tiene reservas pendientes</strong></p>";}
 
 //mysqli_free_result($result);
+//RESERVAS QUE LE FUERON RECHAZADAS
+$query2 = "SELECT r.idreserva, c.idcouch, fechaini, fechafin, titulo FROM reservas r INNER JOIN couchs c ON (r.idcouch = c.idcouch)  WHERE (r.iduser =".$userid.") AND (estado = 'rechazada')";
+$result2 = mysqli_query($conn, $query2);
+if (mysqli_num_rows($result2)>0){
+	echo "<h2>Reservaciones rechazadas</h2>";
+	echo '<table class="tablaVer">
+		<tr>
+			<td>Titulo</td>
+			<td>Fecha inicio</td>
+			<td>Fecha fin</td>
+		</tr>';
+	while ($row2 = mysqli_fetch_array($result2)){
+		echo '<tr>
+				<td>'.$row2['titulo'].'</td>
+				<td>'.$row2['fechaini'].'</td>
+				<td>'.$row2['fechafin'].'</td>
+			</tr>';
+	}
+	echo '</table>';
+}else {echo "<p><strong>No tiene reservas rechazadas</strong></p>";}
 
 include 'footer.php';
 desconectar($conn);
